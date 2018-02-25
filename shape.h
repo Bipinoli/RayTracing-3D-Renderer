@@ -9,7 +9,7 @@
 
 struct MaterialProperty {
 	Color surfaceColor, emissionColor;
-	float transparency, reflection;
+	float transparency, reflection, refractiveIndex;
 };
 
 
@@ -52,6 +52,7 @@ protected:
 	Vector normal;
 	Color surfaceColor, emissionColor;
 	float transparency, reflection; // from 0 and 1
+	float refractiveIndex;
 
 public:
 
@@ -61,6 +62,7 @@ public:
 		const Color& surfaceColor = Color(1.0f, 1.0f, 1.0f),
 		const float reflection = 0.0f,
 		const float transparency = 0.0f,
+		const float refractiveIndex = 1.0f,
 		const Color& emissionColor = Color(0.0f));
 
 	virtual ~Plane();
@@ -81,11 +83,13 @@ public:
 	Vector normal;
 	Color surfaceColor, emissionColor;
 	float transparency, reflection;
+	float refractiveIndex;
 
 	Triangle (const Point vertices[], 
 		const Color& surfaceColor = Color(1.0f, 1.0f, 1.0f),
 		const float reflection = 0.0f,
 		const float transparency = 0.0f,
+		const float refractiveIndex = 1.0f,
 		const Color& emissionColor = Color(0.0f));
 
 	bool intersect(Intersection& intersection);
@@ -102,13 +106,14 @@ protected:
 	float radius;
 	Color surfaceColor, emissionColor;      /// surface color and emission (light) 
     float transparency, reflection;         /// surface transparency and reflectivity 
-    										/// from the scale of 0 to 1
+    float refractiveIndex;					/// from the scale of 0 to 1
 
 public:
 	Sphere(const Point& center, float radius,
 		const Color& surfaceColor = Color(1.0f, 1.0f, 1.0f),
 		const float reflection = 0.0f,
 		const float transparency = 0.0f,
+		const float refractiveIndex = 1.5f,
 		const Color& emissionColor = Color(0.0f));
 
 	virtual ~Sphere();

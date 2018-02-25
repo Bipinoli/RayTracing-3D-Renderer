@@ -46,10 +46,12 @@ Plane::Plane(const Point& position, const Vector& normal,
 		const Color& surfaceColor,
 		const float reflection,
 		const float transparency,
+		const float refractiveIndex,
 		const Color& emissionColor):
 			position(position),
 			normal(normal),
 			surfaceColor(surfaceColor),
+			refractiveIndex(refractiveIndex),
 			emissionColor(emissionColor)
 {
 	this->transparency = std::max(0.0f, std::min(transparency, 1.0f)); // between 0 and 1
@@ -73,6 +75,7 @@ MaterialProperty Plane::getMaterialProperty() {
 	mp.surfaceColor = surfaceColor;
 	mp.emissionColor = emissionColor;
 	mp.transparency = transparency;
+	mp.refractiveIndex = refractiveIndex;
 	mp.reflection = reflection;
 	return mp;
 }
@@ -136,8 +139,10 @@ Triangle::Triangle (const Point vertices[],
 		const Color& surfaceColor,
 		const float reflection,
 		const float transparency,
+		const float refractiveIndex,
 		const Color& emissionColor):
 			surfaceColor(surfaceColor),
+			refractiveIndex(refractiveIndex),
 			emissionColor(emissionColor)
 {
 	this->transparency = std::max(0.0f, std::min(transparency, 1.0f)); // between 0 and 1
@@ -239,10 +244,12 @@ Sphere::Sphere(const Point& center, float radius,
 	const Color& surfaceColor,
 	const float reflection,
 	const float transparency,
+	const float refractiveIndex,
 	const Color& emissionColor):
 		center(center),
 		radius(radius),
 		surfaceColor(surfaceColor),
+		refractiveIndex(refractiveIndex),
 		emissionColor(emissionColor)
 {
 	this->transparency = std::max(0.0f, std::min(transparency, 1.0f)); // between 0 and 1
@@ -266,6 +273,7 @@ MaterialProperty Sphere::getMaterialProperty() {
 	mp.surfaceColor = surfaceColor;
 	mp.emissionColor = emissionColor;
 	mp.transparency = transparency;
+	mp.refractiveIndex = refractiveIndex;
 	mp.reflection = reflection;
 	return mp;
 }

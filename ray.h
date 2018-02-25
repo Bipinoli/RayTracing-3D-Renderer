@@ -14,6 +14,7 @@ struct Ray
 	Point origin; // start
 	Vector direction;
 	float tMax;
+	bool invalid;
 
 	Ray();
 	Ray(const Ray& r);

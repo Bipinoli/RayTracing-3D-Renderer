@@ -7,6 +7,7 @@ Ray::Ray()
 	direction(),
 	tMax(RAY_T_MAX)
 {
+	invalid = false;
 }
 
 Ray::Ray(const Ray& r)
@@ -14,6 +15,7 @@ Ray::Ray(const Ray& r)
 	direction(r.direction),
 	tMax(r.tMax)
 {
+	invalid = false;
 }
 
 Ray::Ray(const Point& origin, const Vector& direction, float tMax)
@@ -21,6 +23,7 @@ Ray::Ray(const Point& origin, const Vector& direction, float tMax)
 	direction(direction),
 	tMax(tMax)
 {
+	invalid = false;
 }
 
 Ray::~Ray()

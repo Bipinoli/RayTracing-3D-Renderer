@@ -31,4 +31,4 @@ objParser.o: shape.o vectormath.o objParser.cpp
 	g++ -c objParser.cpp
 
 clean:
-	del $(OBJS_ALL) main
+	del $(OBJS_ALL)
