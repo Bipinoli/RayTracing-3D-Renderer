@@ -54,6 +54,9 @@ protected:
 	float transparency, reflection; // from 0 and 1
 
 public:
+
+	Plane() {}
+
 	Plane(const Point& position, const Vector& normal,
 		const Color& surfaceColor = Color(1.0f, 1.0f, 1.0f),
 		const float reflection = 0.0f,
@@ -67,6 +70,30 @@ public:
 	virtual bool intersect(Intersection& intersection);
 	virtual bool doesIntersect(const Ray& ray);
 };
+
+
+
+class Triangle : public Plane {
+
+public:
+	Point A, B, C; // vertices in counter clockwise order
+	Point position;
+	Vector normal;
+	Color surfaceColor, emissionColor;
+	float transparency, reflection;
+
+	Triangle (const Point vertices[], 
+		const Color& surfaceColor = Color(1.0f, 1.0f, 1.0f),
+		const float reflection = 0.0f,
+		const float transparency = 0.0f,
+		const Color& emissionColor = Color(0.0f));
+
+	bool intersect(Intersection& intersection);
+	bool doesIntersect(const Ray& ray);
+
+};
+
+
 
 class Sphere : public Shape
 {

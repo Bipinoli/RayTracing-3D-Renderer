@@ -90,8 +90,7 @@ bool Plane::intersect(Intersection& intersection) {
 	}
 
 	// Find point of intersection
-	float t = dot(position - intersection.ray.origin, normal)
-		/ dDotN;
+	float t = dot(position - intersection.ray.origin, normal) / dDotN;
 
 	if (t <= RAY_T_MIN || t >= intersection.t)
 	{
@@ -129,6 +128,109 @@ bool Plane::doesIntersect(const Ray& ray) {
 
 	return true;
 
+}
+
+
+
+Triangle::Triangle (const Point vertices[], 
+		const Color& surfaceColor,
+		const float reflection,
+		const float transparency,
+		const Color& emissionColor):
+			surfaceColor(surfaceColor),
+			emissionColor(emissionColor)
+{
+	this->transparency = std::max(0.0f, std::min(transparency, 1.0f)); // between 0 and 1
+	this->reflection = std::max(0.0f, std::min(reflection, 1.0f)); // between 0 and 1
+
+	A = vertices[0];
+	B = vertices[1];
+	C = vertices[2];
+
+
+	this->position = B;
+
+	this->normal = cross(C-B, A-B);
+	this->normal.normalize();
+}
+	
+
+
+bool Triangle::intersect(Intersection& intersection) {
+
+	// First, check if we intersect
+	float dDotN = dot(intersection.ray.direction, normal);
+
+	if (dDotN == 0.0f)
+	{
+		// We just assume the ray is not embedded in the plane
+		return false;
+	}
+
+	// Find point of intersection
+	float t = dot(position - intersection.ray.origin, normal) / dDotN;
+
+	if (t <= RAY_T_MIN || t >= intersection.t)
+	{
+		// Outside relevant range
+		return false;
+	}
+
+	Point Q = intersection.ray.calculate(t);
+
+	// by looking at the sign of the the cross product we can identify
+	// if the point lies to the left or right of the vector
+	// so checking where Q lies relative to the edges of the triangle
+	// we can verify whether Q lies inside the triangle
+
+	if ( dot( cross(C-B, Q-B), normal ) >= 0 &&
+		 dot( cross(A-C, Q-C), normal ) >= 0 &&
+		 dot( cross(B-A, Q-A), normal ) >= 0) 
+	{
+		// Q lies inside the triangle ABC
+
+		intersection.t = t;
+		intersection.pShape = this;
+		intersection.color = surfaceColor;
+
+		return true;	
+	}
+
+	return false;
+}
+
+
+bool Triangle::doesIntersect(const Ray& ray) {
+
+// First, check if we intersect
+	float dDotN = dot(ray.direction, normal);
+
+	if (dDotN == 0.0f)
+	{
+		// We just assume the ray is not embedded in the plane
+		return false;
+	}
+
+	// Find point of intersection
+	float t = dot(position - ray.origin, normal) / dDotN;
+
+	if (t <= RAY_T_MIN || t >= ray.tMax)
+	{
+		// Outside relevant range
+		return false;
+	}
+
+	Point Q = ray.calculate(t);
+
+	if ( dot( cross(C-B, Q-B), normal ) >= 0 &&
+		 dot( cross(A-C, Q-C), normal ) >= 0 &&
+		 dot( cross(B-A, Q-A), normal ) >= 0) 
+	{
+		// Q lies inside the triangle ABC
+		return true;	
+	}
+
+	return false;
 }
 
 
