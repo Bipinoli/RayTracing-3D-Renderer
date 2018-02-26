@@ -6,7 +6,7 @@
 using namespace std;
 
 
-const int MAX_RECUR_DEPTH = 10;
+const int MAX_RECUR_DEPTH = 3;
 const float ka = 0.73; // ambient light coeff
 const int ns = 64; // exponent of cos for specular light
 				  // generally multiple of 2
@@ -93,8 +93,11 @@ Color castRay(const Ray& ray, Shape* scene, LightSource& lightSource, int depth)
 		specularRay = reflect(specularRay, normalVector, hitPoint);
 
 
+		Intersection shadowIntersection2(shadowRay);
+
 		if (!scene->intersect(shadowIntersection) || pow(shadowIntersection.t, 2) >= length2 ) 
 		{
+			// Phong Shading, as we have normal to any hit Point
 			directColor = ka * intersection.color 
 						  +
 						 	intersection.color * lightSource.brightness 
@@ -107,14 +110,16 @@ Color castRay(const Ray& ray, Shape* scene, LightSource& lightSource, int depth)
 			// ambient + diffused + specular lights
 		}
 		
-		else if (scene->intersect(shadowIntersection) && pow(shadowIntersection.t, 2) < length2) {
+		else if (shadowIntersection.t < RAY_T_MAX && pow(shadowIntersection.t, 2) < length2) {
 			// if intersecting object is transparent then certain light enters in
-			// but this is very crude solution as there might be other opaque 
-			// objects beyond it still blocking the object
-			directColor = ka * Color(1.0f)
-						  +
-						 	Color(1.0f) * lightSource.brightness * (1.0/length2);
-			directColor *= material.transparency;
+			// so that shadow is not dark but the result of lensing of light
+
+			MaterialProperty lensMaterial = shadowIntersection.pShape->getMaterialProperty();
+			if (lensMaterial.transparency > 0.0f) {
+				// cout << "lens found confirmed!" << endl;
+				directColor = castRay(shadowRay, scene, lightSource, depth+1)
+								 * lensMaterial.transparency * material.reflection;
+			}
 		}
 
 		color = directColor;		

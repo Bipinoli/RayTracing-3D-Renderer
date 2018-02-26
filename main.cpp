@@ -41,12 +41,12 @@ int main(int argc, char** argv)
 		Color(0.8f, 0.8f, 0.0f), 0.7f);
 	scene.addShape(&sphere4);
 
-	Sphere sphere5(Point(5.0f, 3.0f, -8.0f), 2.7f,
-		Color(0.0f, 0.0f, 0.0f), 1.0f, 0.2f, 1.5f); // 0.6 refrac coeff, 1.5 refrac Index
-	scene.addShape(&sphere5);
+	// Sphere sphere5(Point(5.0f, 3.0f, -8.0f), 2.7f,
+	// 	Color(0.0f, 0.0f, 0.0f), 1.0f, 0.2f, 1.5f); // 0.2 refrac coeff, 1.5 refrac Index
+	// scene.addShape(&sphere5);
 
 	Sphere sphere6(Point(-2.0f, 1.3f, 1.2f), 1.0f,
-		Color(0.02f, 0.0f, 0.0f), 0.01f, 1.0f, 1.5f); // 0.6 refrac coeff, 1.5 refrac Index
+		Color(0.02f, 0.0f, 0.0f), 0.01f, 1.0f, 1.5f); // 1.0 refrac coeff, 1.5 refrac Index
 	scene.addShape(&sphere6);
 
 	// ---------------------------------------------
