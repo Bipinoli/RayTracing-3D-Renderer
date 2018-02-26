@@ -10,9 +10,6 @@ struct Color
 
 	virtual ~Color();
 
-	void clamp(float min = 0.0f, float max = 1.0f);
-	void applyGammaCorrection(float exposure, float gamma);
-
 	Color& operator =(const Color& c);
 	Color& operator +=(const Color& c);
 	Color& operator *=(const Color& c);
